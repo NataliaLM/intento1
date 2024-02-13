@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl" Namespace="intento1.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2005">
+        <EntityContainer Name="intento1TargetContainer" >
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="intento1" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+        <EntityContainer Name="intento1Container" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Pedidos" EntityType="intento1.Pedido" />
+          <EntitySet Name="Productos" EntityType="intento1.Producto" />
+          <EntitySet Name="StockAlerts" EntityType="intento1.StockAlert" cg:GetterAccess="Internal" />
+          <AssociationSet Name="PedidoProducto" Association="intento1.PedidoProducto">
+            <End Role="Pedido" EntitySet="Pedidos" />
+            <End Role="Producto" EntitySet="Productos" />
+          </AssociationSet>
+          <AssociationSet Name="ProductoStockAlert" Association="intento1.ProductoStockAlert">
+            <End Role="Producto" EntitySet="Productos" />
+            <End Role="StockAlert" EntitySet="StockAlerts" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Pedido">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="email" Type="String" Nullable="false" />
+          <NavigationProperty Name="Producto" Relationship="intento1.PedidoProducto" FromRole="Pedido" ToRole="Producto" />
+        </EntityType>
+        <EntityType Name="Producto">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Cantidad" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Pedido" Relationship="intento1.PedidoProducto" FromRole="Producto" ToRole="Pedido" />
+          <NavigationProperty Name="StockAlert" Relationship="intento1.ProductoStockAlert" FromRole="Producto" ToRole="StockAlert" />
+        </EntityType>
+        <EntityType Name="StockAlert" cg:TypeAccess="Internal">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Producto" Relationship="intento1.ProductoStockAlert" FromRole="StockAlert" ToRole="Producto" />
+        </EntityType>
+        <Association Name="PedidoProducto">
+          <End Type="intento1.Pedido" Role="Pedido" Multiplicity="*" />
+          <End Type="intento1.Producto" Role="Producto" Multiplicity="*" />
+        </Association>
+        <Association Name="ProductoStockAlert">
+          <End Type="intento1.Producto" Role="Producto" Multiplicity="*" />
+          <End Type="intento1.StockAlert" Role="StockAlert" Multiplicity="1" />
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs" Space="C-S">
+        <Alias Key="Model" Value="intento1" />
+        <Alias Key="Target" Value="intento1.Store" />
+        <EntityContainerMapping CdmEntityContainer="intento1Container" StorageEntityContainer="intento1TargetContainer">
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

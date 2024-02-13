@@ -1,0 +1,38 @@
+﻿@*@model intento1.StockAlerts*@
+<!--Añadido-->
+@model IEnumerable<intento1.Productos>
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Productos del StockAlert</h4>
+    <hr />
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Cantidad</th>
+                <th>StockAlert ID</th>
+                <!-- Agrega más encabezados si es necesario -->
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var producto in Model)
+            {
+                <tr>
+                    <td>@producto.Cantidad</td>
+                    <td>@producto.StockAlerts.Id</td>
+                    <!-- Agrega más columnas si es necesario -->
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<p>
+    @*@Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |*@
+    @Html.ActionLink("Back to List", "Index")
+</p>
