@@ -31,7 +31,7 @@ namespace intento1.Controllers
                 // Crear un nuevo pedido
                 Pedidos pedido = new Pedidos
                 {
-                    email = "hola " + User.Identity.Name
+                    email = User.Identity.Name
                 };
 
                 // Agregar el pedido a la base de datos
@@ -104,22 +104,46 @@ namespace intento1.Controllers
             return View();
         }
 
+        //// POST: Productos/Create
+        //// Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que quiere enlazarse. Para obtener 
+        //// más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult Create([Bind(Include = "Id,Cantidad,StockAlert_Id")] Productos productos)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        db.Productos.Add(productos);
+        //        db.SaveChanges();
+        //        return RedirectToAction("Index");
+        //    }
+
+        //    ViewBag.StockAlert_Id = new SelectList(db.StockAlerts, "Id", "Id", productos.StockAlert_Id);
+        //    return View(productos);
+        //}
+
         // POST: Productos/Create
-        // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que quiere enlazarse. Para obtener 
-        // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Cantidad,StockAlert_Id")] Productos productos)
+        public ActionResult Create([Bind(Include = "Id,Cantidad,StockAlert_Id")] Producto producto)
         {
             if (ModelState.IsValid)
             {
+                // Convertir Producto a Productos
+                var productos = new Productos
+                {
+                    Id = producto.Id,
+                    Cantidad = producto.Cantidad,
+                    StockAlert_Id = producto.StockAlert_Id
+                };
+
                 db.Productos.Add(productos);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.StockAlert_Id = new SelectList(db.StockAlerts, "Id", "Id", productos.StockAlert_Id);
-            return View(productos);
+            ViewBag.StockAlert_Id = new SelectList(db.StockAlerts, "Id", "Id", producto.StockAlert_Id);
+            return View(producto);
         }
 
         // GET: Productos/Edit/5
@@ -138,21 +162,51 @@ namespace intento1.Controllers
             return View(productos);
         }
 
+        //// POST: Productos/Edit/5
+        //// Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que quiere enlazarse. Para obtener 
+        //// más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult Edit([Bind(Include = "Id,Cantidad,StockAlert_Id")] Productos productos)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        db.Entry(productos).State = EntityState.Modified;
+        //        db.SaveChanges();
+        //        return RedirectToAction("Index");
+        //    }
+        //    ViewBag.StockAlert_Id = new SelectList(db.StockAlerts, "Id", "Id", productos.StockAlert_Id);
+        //    return View(productos);
+        //}
+
         // POST: Productos/Edit/5
-        // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que quiere enlazarse. Para obtener 
-        // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Cantidad,StockAlert_Id")] Productos productos)
+        public ActionResult Edit([Bind(Include = "Id,Cantidad,StockAlert_Id")] Producto producto)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(productos).State = EntityState.Modified;
+                // Convertir Producto a Productos
+                Productos productoDb = db.Productos.Find(producto.Id);
+
+                if (productoDb == null)
+                {
+                    return HttpNotFound();
+                }
+
+                // Actualizar los campos del producto encontrado en la base de datos con los valores del objeto Producto recibido
+                productoDb.Cantidad = producto.Cantidad;
+                productoDb.StockAlert_Id = producto.StockAlert_Id;
+
+                db.Entry(productoDb).State = EntityState.Modified;
                 db.SaveChanges();
+
                 return RedirectToAction("Index");
             }
-            ViewBag.StockAlert_Id = new SelectList(db.StockAlerts, "Id", "Id", productos.StockAlert_Id);
-            return View(productos);
+
+            ViewBag.StockAlert_Id = new SelectList(db.StockAlerts, "Id", "Id", producto.StockAlert_Id);
+
+            return View(producto);
         }
 
         // GET: Productos/Delete/5

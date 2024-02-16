@@ -232,6 +232,7 @@
     <Compile Include="Models\CarritoCompraModelBinder.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\Producto.cs" />
     <Compile Include="Pedidos.cs">
       <DependentUpon>intento3.tt</DependentUpon>
     </Compile>
@@ -249,6 +250,7 @@
     <Content Include="App_Data\intento1_log.ldf">
       <DependentUpon>intento1.mdf</DependentUpon>
     </Content>
+    <Content Include="Assets\Agotado3.png" />
     <Content Include="Content\bootstrap-grid.css" />
     <Content Include="Content\bootstrap-grid.min.css" />
     <Content Include="Content\bootstrap-grid.rtl.css" />
